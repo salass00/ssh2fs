@@ -62,6 +62,10 @@
 #include <stdio.h>
 #include <errno.h>
 
+#ifdef __AROS__
+#include <proto/bsdsocket.h>
+#endif
+
 #if defined(__amigaos4__) && defined(LIBSSH2DEBUG)
 #include <proto/exec.h>
 #endif

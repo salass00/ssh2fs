@@ -58,6 +58,10 @@
 #include "mac.h"
 #include "misc.h"
 
+#ifdef __AROS__
+#include <proto/bsdsocket.h>
+#endif
+
 /* libssh2_default_alloc
  */
 static
