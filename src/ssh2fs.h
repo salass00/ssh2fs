@@ -49,5 +49,8 @@ int ssh2fs_main(struct DosPacket *pkt);
 
 char *request_password(unsigned int auth_pw, ...);
 
+int setup_malloc(void);
+void cleanup_malloc(void);
+
 #endif /* SSH2FS_H */
 

@@ -15,7 +15,7 @@ CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS = -nostartfiles
 LIBS    = -lcrypto -lz -ldebug -larosc
 
-SRCS = start.c main.c time.c
+SRCS = start.c main.c time.c malloc.c
 
 OBJS = $(addprefix obj/,$(SRCS:.c=.o))
 

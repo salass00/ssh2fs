@@ -117,12 +117,19 @@ int _start(void)
 		goto cleanup;
 	}
 
+	if (setup_malloc() == FALSE)
+	{
+		goto cleanup;
+	}
+
 	rc = ssh2fs_main(pkt);
 
 	/* Set to NULL so we don't reply the packet twice */
 	pkt = NULL;
 
 cleanup:
+
+	cleanup_malloc();
 
 	if (SocketBase == NULL)
 	{
