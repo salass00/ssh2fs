@@ -528,8 +528,6 @@ libssh2_passphrase_callback_set(LIBSSH2_SESSION *session,
  * ALERT: this function relies on that we can typecast function pointers
  * to void pointers, which isn't allowed in ISO C!
  */
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
 LIBSSH2_API void *
 libssh2_session_callback_set(LIBSSH2_SESSION * session,
                              int cbtype, void *callback)
@@ -577,7 +575,6 @@ libssh2_session_callback_set(LIBSSH2_SESSION * session,
 
     return NULL;
 }
-#pragma GCC diagnostic pop
 
 /*
  * _libssh2_wait_socket()
