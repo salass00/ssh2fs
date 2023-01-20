@@ -44,7 +44,7 @@ struct Library *aroscbase;
 struct Library *FileSysBoxBase;
 struct Library *SocketBase;
 
-__attribute__((used)) const char verstag[] = VERSTAG;
+__attribute__((used)) static const char verstag[] = VERSTAG;
 
 int _start(void)
 {
@@ -122,12 +122,19 @@ int _start(void)
 		goto cleanup;
 	}
 
+	if (libssh2_init(0) != 0)
+	{
+		goto cleanup;
+	}
+
 	rc = ssh2fs_main(pkt);
 
 	/* Set to NULL so we don't reply the packet twice */
 	pkt = NULL;
 
 cleanup:
+
+	libssh2_exit();
 
 	cleanup_malloc();
 
