@@ -155,6 +155,12 @@ cleanup:
 		UtilityBase = NULL;
 	}
 
+	if (pkt != NULL)
+	{
+		ReplyPkt(pkt, DOSFALSE, ERROR_INVALID_RESIDENT_LIBRARY);
+		pkt = NULL;
+	}
+
 	if (DOSBase != NULL)
 	{
 		CloseLibrary((struct Library *)DOSBase);
