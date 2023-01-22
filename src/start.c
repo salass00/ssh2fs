@@ -34,6 +34,7 @@
 #include <utility/utility.h>
 #include <proto/utility.h>
 #include <bsdsocket/socketbasetags.h>
+#include <proto/bsdsocket.h>
 
 #ifndef __AROS__
 #include <libraries/amisslmaster.h>

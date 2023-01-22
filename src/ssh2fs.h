@@ -33,7 +33,6 @@
 #include <proto/exec.h>
 #include <proto/dos.h>
 #include <proto/filesysbox.h>
-#include <proto/bsdsocket.h>
 
 #ifndef ZERO
 #define ZERO MKBADDR(NULL)

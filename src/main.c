@@ -29,9 +29,6 @@
 
 #include "ssh2fs.h"
 
-#include <libraries/bsdsocket.h>
-#include <clib/debug_protos.h>
-
 #include <libssh2.h>
 #include <libssh2_sftp.h>
 
@@ -41,7 +38,13 @@
 #include <string.h>
 #include <netdb.h>
 #include <time.h>
+#include <ctype.h>
 #include <errno.h>
+
+#include <dos/filehandler.h>
+#include <libraries/bsdsocket.h>
+#include <proto/bsdsocket.h>
+#include <clib/debug_protos.h>
 
 #ifdef __AROS__
 #define isspace(c) ssh2fs_isspace(c)
@@ -230,7 +233,7 @@ static void *ssh2fs_init(struct fuse_conn_info *fci)
 	}
 
 	hostname = (const char *)md->args[ARG_HOSTADDR];
-	hostent  = gethostbyname(hostname);
+	hostent  = gethostbyname((STRPTR)hostname);
 	if (hostent == NULL)
 	{
 		KPrintF((CONST_STRPTR)"[ssh2fs] Failed to resolve host address, '%s'!\n", hostname);
