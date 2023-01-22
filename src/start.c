@@ -35,6 +35,13 @@
 #include <proto/utility.h>
 #include <bsdsocket/socketbasetags.h>
 
+#ifndef __AROS__
+#include <libraries/amisslmaster.h>
+#include <proto/amisslmaster.h>
+#include <proto/amissl.h>
+#endif
+
+#include <libssh2.h>
 #include <errno.h>
 
 struct ExecBase *SysBase;
@@ -43,6 +50,11 @@ struct UtilityBase *UtilityBase;
 struct Library *aroscbase;
 struct Library *FileSysBoxBase;
 struct Library *SocketBase;
+
+#ifndef __AROS__
+struct Library *AmiSSLMasterBase;
+struct Library *AmiSSLBase;
+#endif
 
 __attribute__((used)) static const char verstag[] = VERSTAG;
 
@@ -110,12 +122,30 @@ int _start(void)
 
 	if (SocketBaseTags(
 		SBTM_SETVAL(SBTC_BREAKMASK),     0, /* Disable CTRL-C checking in WaitSelect() */
-		SBTM_SETVAL(SBTC_ERRNOLONGPTR),  &errno,
+		SBTM_SETVAL(SBTC_ERRNOLONGPTR),  (Tag)&errno,
 		//SBTM_SETVAL(SBTC_HERRNOLONGPTR), &h_errno // TODO
 		TAG_END))
 	{
 		goto cleanup;
 	}
+
+#ifndef __AROS__
+	AmiSSLMasterBase = OpenLibrary((CONST_STRPTR)"amisslmaster.library", AMISSLMASTER_MIN_VERSION);
+	if (AmiSSLMasterBase == NULL)
+	{
+		goto cleanup;
+	}
+
+	if (OpenAmiSSLTags(AMISSL_CURRENT_VERSION,
+		AmiSSL_UsesOpenSSLStructs, TRUE,
+		AmiSSL_GetAmiSSLBase,      (Tag)&AmiSSLBase,
+		AmiSSL_SocketBase,         (Tag)&SocketBase,
+		AmiSSL_ErrNoPtr,           (Tag)&errno,
+		TAG_END) != 0)
+	{
+		goto cleanup;
+	}
+#endif
 
 	if (setup_malloc() == FALSE)
 	{
@@ -137,6 +167,20 @@ cleanup:
 	libssh2_exit();
 
 	cleanup_malloc();
+
+#ifndef __AROS__
+	if (AmiSSLBase != NULL)
+	{
+		CloseAmiSSL();
+		AmiSSLBase = NULL;
+	}
+
+	if (AmiSSLMasterBase != NULL)
+	{
+		CloseLibrary(AmiSSLMasterBase);
+		AmiSSLMasterBase = NULL;
+	}
+#endif
 
 	if (SocketBase == NULL)
 	{
