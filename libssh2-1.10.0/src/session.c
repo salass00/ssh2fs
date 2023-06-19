@@ -61,6 +61,7 @@
 #if defined(AMIGA) || defined(__AROS__)
 #include <proto/bsdsocket.h>
 #include <sys/ioctl.h>
+#define select(maxfd,rfds,wfds,efds,timeout) WaitSelect(maxfd,rfds,wfds,efds,timeout,NULL)
 #endif
 
 /* libssh2_default_alloc
