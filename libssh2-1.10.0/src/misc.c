@@ -62,7 +62,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#ifdef __AROS__
+#if defined(AMIGA) || defined(__AROS__)
 #include <proto/bsdsocket.h>
 #endif
 
@@ -178,7 +178,7 @@ _libssh2_send(libssh2_socket_t sock, const void *buffer, size_t length,
 
     (void) abstract;
 
-    rc = send(sock, buffer, length, flags);
+    rc = send(sock, (void *)buffer, length, flags);
 #ifdef WIN32
     if(rc < 0)
         return -wsa2errno();
