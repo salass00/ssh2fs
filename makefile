@@ -17,7 +17,7 @@ LIBS    = -ldebug
 
 STRIPFLAGS = -R.comment
 
-SRCS = start.c main.c time.c malloc.c
+SRCS = start.c main.c time.c malloc.c strlcpy.c
 
 OBJS = $(addprefix obj/,$(SRCS:.c=.o))
 
