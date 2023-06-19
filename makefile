@@ -13,7 +13,7 @@ WARNINGS = -Wall -Werror -Wwrite-strings
 
 CFLAGS  = -noixemul $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS = -noixemul -nostartfiles
-LIBS    = -ldebug
+LIBS    = -lamisslstubs -ldebug
 
 STRIPFLAGS = -R.comment
 
