@@ -596,7 +596,7 @@ static void ssh2fs_destroy(void *unused)
 
 	if (fsd->socket >= 0)
 	{
-		close(fsd->socket);
+		CloseSocket(fsd->socket);
 		fsd->socket = -1;
 	}
 
