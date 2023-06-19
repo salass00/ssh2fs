@@ -562,31 +562,6 @@ static void *ssh2fs_init(struct fuse_conn_info *fci)
 	return fsd;
 }
 
-static void trash_mem(void *buffer, size_t size) {
-	uint32_t  trash[4];
-	uint8_t  *dst = buffer;
-
-	/* Generate some random trash ... */
-	srand(time(NULL));
-	trash[0] = rand();
-	trash[1] = rand();
-	trash[2] = rand();
-	trash[3] = rand();
-
-	/* ... and fill the buffer with it */
-	while (size >= sizeof(trash))
-	{
-		memcpy(dst, trash, sizeof(trash));
-		dst  += sizeof(trash);
-		size -= sizeof(trash);
-	}
-
-	if (size > 0)
-	{
-		memcpy(dst, trash, size);
-	}
-}
-
 static void ssh2fs_destroy(void *unused)
 {
 	if (fsd == NULL)
@@ -614,7 +589,7 @@ static void ssh2fs_destroy(void *unused)
 
 	if (fsd->password != NULL)
 	{
-		trash_mem(fsd->password, strlen(fsd->password) + 1);
+		bzero(fsd->password, strlen(fsd->password));
 		free(fsd->password);
 		fsd->password = NULL;
 	}
