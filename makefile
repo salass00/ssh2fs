@@ -6,7 +6,7 @@ VERSION = 53
 
 LIBSSH2DIR = libssh2-1.10.0
 
-OPTIMIZE = -m68020 -O2 -fomit-frame-pointer
+OPTIMIZE = -O2 -fomit-frame-pointer
 DEBUG    = -g
 INCLUDES = -I. -I./$(LIBSSH2DIR)/include
 WARNINGS = -Wall -Werror -Wwrite-strings
@@ -19,32 +19,58 @@ STRIPFLAGS = -R.comment
 
 SRCS = start.c main.c time.c malloc.c strlcpy.c
 
-OBJS = $(addprefix obj/,$(SRCS:.c=.o))
+ARCH_000 = -mcpu=68000 -mtune=68000
+OBJS_000 = $(addprefix obj/68000/,$(SRCS:.c=.o))
+DEPS_000 = $(OBJS_000:.o=.d)
+
+ARCH_020 = -mcpu=68020 -mtune=68020-60
+OBJS_020 = $(addprefix obj/68020/,$(SRCS:.c=.o))
+DEPS_020 = $(OBJS_020:.o=.d)
 
 .PHONY: all
-all: $(TARGET)
+all: bin/$(TARGET).000 bin/$(TARGET).020
 
-.PHONY: build-libssh2
-build-libssh2:
-	$(MAKE) -C $(LIBSSH2DIR) libssh2.a
+-include $(DEPS_000)
+-include $(DEPS_020)
 
-obj/%.o: src/%.c
-	@mkdir -p obj
-	$(CC) $(CFLAGS) -c -o $@ $<
+obj/68000/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) -MM -MP -MT $(@:.o=.d) -MT $@ -MF $(@:.o=.d) $(ARCH_000) $(CFLAGS) $<
+	$(CC) $(ARCH_000) $(CFLAGS) -c -o $@ $<
 
-$(LIBSSH2DIR)/libssh2.a: build-libssh2
+obj/68020/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) -MM -MP -MT $(@:.o=.d) -MT $@ -MF $(@:.o=.d) $(ARCH_020) $(CFLAGS) $<
+	$(CC) $(ARCH_020) $(CFLAGS) -c -o $@ $<
+
+.PHONY: build-libssh2-000 build-libssh2-020
+
+build-libssh2-000:
+	$(MAKE) -C $(LIBSSH2DIR) bin/libssh2.a.000
+
+build-libssh2-020:
+	$(MAKE) -C $(LIBSSH2DIR) bin/libssh2.a.020
+
+$(LIBSSH2DIR)/bin/libssh2.a.000: build-libssh2-000
 	@true
 
-obj/start.o obj/main.o: src/ssh2fs.h $(TARGET)_rev.h
+$(LIBSSH2DIR)/bin/libssh2.a.020: build-libssh2-020
+	@true
 
-$(TARGET): $(OBJS) $(LIBSSH2DIR)/libssh2.a
+bin/$(TARGET).000: $(OBJS_000) $(LIBSSH2DIR)/bin/libssh2.a.000
+	@mkdir -p $(dir $@)
+	$(CC) $(LDFLAGS) -o $@.debug $^ $(LIBS)
+	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
+
+bin/$(TARGET).020: $(OBJS_020) $(LIBSSH2DIR)/bin/libssh2.a.020
+	@mkdir -p $(dir $@)
 	$(CC) $(LDFLAGS) -o $@.debug $^ $(LIBS)
 	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
 
 .PHONY: clean
 clean:
 	$(MAKE) -C $(LIBSSH2DIR) clean
-	rm -rf $(TARGET) $(TARGET).debug obj
+	rm -rf bin obj
 
 .PHONY: revision
 revision:

@@ -233,7 +233,7 @@ static void *ssh2fs_init(struct fuse_conn_info *fci)
 	}
 
 	hostname = (const char *)md->args[ARG_HOSTADDR];
-	hostent  = gethostbyname((STRPTR)hostname);
+	hostent  = gethostbyname((APTR)hostname);
 	if (hostent == NULL)
 	{
 		KPrintF((CONST_STRPTR)"[ssh2fs] Failed to resolve host address, '%s'!\n", hostname);

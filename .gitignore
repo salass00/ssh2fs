@@ -1,5 +1,9 @@
 # Ignore object and archive files
 *.[oa]
-# Ignore ssh2fs generated files
-ssh2-handler
-ssh2-handler.debug
+# Ignore output directories
+bin
+obj
+# Ignore release archives
+*.7z
+*.iso
+*.lha
