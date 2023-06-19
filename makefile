@@ -11,9 +11,11 @@ DEBUG    = -g
 INCLUDES = -I. -I./$(LIBSSH2DIR)/include
 WARNINGS = -Wall -Werror -Wwrite-strings
 
-CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
-LDFLAGS = -nostartfiles
-LIBS    = -lz -ldebug
+CFLAGS  = -noixemul $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
+LDFLAGS = -noixemul -nostartfiles
+LIBS    = -ldebug
+
+STRIPFLAGS = -R.comment
 
 SRCS = start.c main.c time.c malloc.c
 
@@ -36,7 +38,8 @@ $(LIBSSH2DIR)/libssh2.a: build-libssh2
 obj/start.o obj/main.o: src/ssh2fs.h $(TARGET)_rev.h
 
 $(TARGET): $(OBJS) $(LIBSSH2DIR)/libssh2.a
-	$(CC) -s $(LDFLAGS) -o $@.debug $^ $(LIBS)
+	$(CC) $(LDFLAGS) -o $@.debug $^ $(LIBS)
+	$(STRIP) $(STRIPFLAGS) -o $@ $@.debug
 
 .PHONY: clean
 clean:
