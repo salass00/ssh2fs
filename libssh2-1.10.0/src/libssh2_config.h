@@ -72,9 +72,9 @@
 
 /* Socket non-blocking support */
 #define HAVE_O_NONBLOCK 1
-/* #undef HAVE_FIONBIO */
+#define HAVE_FIONBIO 1
 /* #undef HAVE_IOCTLSOCKET */
-/* #undef HAVE_IOCTLSOCKET_CASE */
+#define HAVE_IOCTLSOCKET_CASE 1
 /* #undef HAVE_SO_NONBLOCK */
 /* #undef HAVE_DISABLED_NONBLOCKING */
 

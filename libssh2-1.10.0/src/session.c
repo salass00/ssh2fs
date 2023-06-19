@@ -58,8 +58,9 @@
 #include "mac.h"
 #include "misc.h"
 
-#ifdef __AROS__
+#if defined(AMIGA) || defined(__AROS__)
 #include <proto/bsdsocket.h>
+#include <sys/ioctl.h>
 #endif
 
 /* libssh2_default_alloc
@@ -282,6 +283,14 @@ session_nonblock(libssh2_socket_t sockfd,   /* operate on this */
 {
 #undef SETBLOCK
 #define SETBLOCK 0
+#if defined(HAVE_IOCTLSOCKET_CASE) && (SETBLOCK == 0)
+    /* Amiga */
+	long b = nonblock ? 1 : 0;
+    return IoctlSocket(sockfd, FIONBIO, (char *)&b);
+#undef SETBLOCK
+#define SETBLOCK 4
+#endif
+
 #ifdef HAVE_O_NONBLOCK
     /* most recent unix versions */
     int flags;
@@ -313,13 +322,6 @@ session_nonblock(libssh2_socket_t sockfd,   /* operate on this */
     return ioctlsocket(sockfd, FIONBIO, &flags);
 #undef SETBLOCK
 #define SETBLOCK 3
-#endif
-
-#if defined(HAVE_IOCTLSOCKET_CASE) && (SETBLOCK == 0)
-    /* presumably for Amiga */
-    return IoctlSocket(sockfd, FIONBIO, (long) nonblock);
-#undef SETBLOCK
-#define SETBLOCK 4
 #endif
 
 #if defined(HAVE_SO_NONBLOCK) && (SETBLOCK == 0)
