@@ -71,12 +71,12 @@
 #define HAVE_EVP_AES_128_CTR 1
 
 /* Socket non-blocking support */
-#define HAVE_O_NONBLOCK 1
-#define HAVE_FIONBIO 1
+/* #undef HAVE_O_NONBLOCK */
+/* #undef HAVE_FIONBIO */
 /* #undef HAVE_IOCTLSOCKET */
 #define HAVE_IOCTLSOCKET_CASE 1
 /* #undef HAVE_SO_NONBLOCK */
-/* #undef HAVE_DISABLED_NONBLOCKING */
+#define HAVE_DISABLED_NONBLOCKING 1
 
 /* snprintf not in Visual Studio CRT and _snprintf dangerously incompatible.
    We provide a safe wrapper if snprintf not found */

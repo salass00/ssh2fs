@@ -284,14 +284,6 @@ session_nonblock(libssh2_socket_t sockfd,   /* operate on this */
 {
 #undef SETBLOCK
 #define SETBLOCK 0
-#if defined(HAVE_IOCTLSOCKET_CASE) && (SETBLOCK == 0)
-    /* Amiga */
-	long b = nonblock ? 1 : 0;
-    return IoctlSocket(sockfd, FIONBIO, (char *)&b);
-#undef SETBLOCK
-#define SETBLOCK 4
-#endif
-
 #ifdef HAVE_O_NONBLOCK
     /* most recent unix versions */
     int flags;
@@ -325,6 +317,14 @@ session_nonblock(libssh2_socket_t sockfd,   /* operate on this */
 #define SETBLOCK 3
 #endif
 
+#if defined(HAVE_IOCTLSOCKET_CASE) && (SETBLOCK == 0)
+    /* Amiga */
+	long b = nonblock ? 1 : 0;
+    return IoctlSocket(sockfd, FIONBIO, (char *)&b);
+#undef SETBLOCK
+#define SETBLOCK 4
+#endif
+
 #if defined(HAVE_SO_NONBLOCK) && (SETBLOCK == 0)
     /* BeOS */
     long b = nonblock ? 1 : 0;
@@ -333,7 +333,7 @@ session_nonblock(libssh2_socket_t sockfd,   /* operate on this */
 #define SETBLOCK 5
 #endif
 
-#ifdef HAVE_DISABLED_NONBLOCKING
+#if defined(HAVE_DISABLED_NONBLOCKING) && (SETBLOCK == 0)
     return 0;                   /* returns success */
 #undef SETBLOCK
 #define SETBLOCK 6
@@ -412,8 +412,8 @@ get_socket_nonblocking(int sockfd)
 #define GETBLOCK 6
 #endif
 
-#ifdef HAVE_DISABLED_NONBLOCKING
-    return 1;                   /* returns blocking */
+#if defined(HAVE_DISABLED_NONBLOCKING) && (GETBLOCK == 0)
+    return 0;                   /* returns blocking */
 #undef GETBLOCK
 #define GETBLOCK 7
 #endif
