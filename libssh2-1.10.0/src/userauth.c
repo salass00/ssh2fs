@@ -40,7 +40,11 @@
 #include "libssh2_priv.h"
 
 #include <ctype.h>
+#ifdef LIBSSH2_AMIGADOS
+#include <proto/dos.h>
+#else
 #include <stdio.h>
+#endif
 
 #include <assert.h>
 
@@ -569,7 +573,11 @@ file_read_publickey(LIBSSH2_SESSION * session, unsigned char **method,
                     size_t *pubkeydata_len,
                     const char *pubkeyfile)
 {
+#ifdef LIBSSH2_AMIGADOS
+    BPTR fh;
+#else
     FILE *fd;
+#endif
     char c;
     unsigned char *pubkey = NULL, *sp1, *sp2, *tmp;
     size_t pubkey_len = 0, sp_len;
@@ -578,6 +586,37 @@ file_read_publickey(LIBSSH2_SESSION * session, unsigned char **method,
     _libssh2_debug(session, LIBSSH2_TRACE_AUTH, "Loading public key file: %s",
                    pubkeyfile);
     /* Read Public Key */
+#ifdef LIBSSH2_AMIGADOS
+    fh = Open((CONST_STRPTR)pubkeyfile, MODE_OLDFILE);
+    if(!fh) {
+        return _libssh2_error(session, LIBSSH2_ERROR_FILE,
+                              "Unable to open public key file");
+    }
+    while(1 == FRead(fh, &c, 1, 1) && c != '\r' && c != '\n') {
+        pubkey_len++;
+    }
+	Seek(fh, 0, OFFSET_BEGINNING);
+
+    if(pubkey_len <= 1) {
+        Close(fh);
+        return _libssh2_error(session, LIBSSH2_ERROR_FILE,
+                              "Invalid data in public key file");
+    }
+
+    pubkey = LIBSSH2_ALLOC(session, pubkey_len);
+    if(!pubkey) {
+        Close(fh);
+        return _libssh2_error(session, LIBSSH2_ERROR_ALLOC,
+                              "Unable to allocate memory for public key data");
+    }
+    if(FRead(fh, pubkey, 1, pubkey_len) != pubkey_len) {
+        LIBSSH2_FREE(session, pubkey);
+        Close(fh);
+        return _libssh2_error(session, LIBSSH2_ERROR_FILE,
+                              "Unable to read public key from file");
+    }
+    Close(fh);
+#else
     fd = fopen(pubkeyfile, FOPEN_READTEXT);
     if(!fd) {
         return _libssh2_error(session, LIBSSH2_ERROR_FILE,
@@ -607,6 +646,7 @@ file_read_publickey(LIBSSH2_SESSION * session, unsigned char **method,
                               "Unable to read public key from file");
     }
     fclose(fd);
+#endif
     /*
      * Remove trailing whitespace
      */

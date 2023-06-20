@@ -54,7 +54,11 @@
 #include <ws2tcpip.h>
 #endif
 
+#ifdef LIBSSH2_AMIGADOS
+#include <proto/dos.h>
+#else
 #include <stdio.h>
+#endif
 #include <time.h>
 
 /* The following CPP block should really only be in session.c and packet.c.
@@ -1093,21 +1097,36 @@ int _libssh2_bcrypt_pbkdf(const char *pass,
                           unsigned int rounds);
 
 /* pem.c */
+#ifdef LIBSSH2_AMIGADOS
+int _libssh2_pem_parse(LIBSSH2_SESSION * session,
+                       const char *headerbegin,
+                       const char *headerend,
+                       const unsigned char *passphrase,
+                       BPTR fh, unsigned char **data, unsigned int *datalen);
+#else
 int _libssh2_pem_parse(LIBSSH2_SESSION * session,
                        const char *headerbegin,
                        const char *headerend,
                        const unsigned char *passphrase,
                        FILE * fp, unsigned char **data, unsigned int *datalen);
+#endif
 int _libssh2_pem_parse_memory(LIBSSH2_SESSION * session,
                               const char *headerbegin,
                               const char *headerend,
                               const char *filedata, size_t filedata_len,
                               unsigned char **data, unsigned int *datalen);
  /* OpenSSL keys */
+#ifdef LIBSSH2_AMIGADOS
+int
+_libssh2_openssh_pem_parse(LIBSSH2_SESSION * session,
+                           const unsigned char *passphrase,
+                           BPTR fh, struct string_buf **decrypted_buf);
+#else
 int
 _libssh2_openssh_pem_parse(LIBSSH2_SESSION * session,
                            const unsigned char *passphrase,
                            FILE * fp, struct string_buf **decrypted_buf);
+#endif
 int
 _libssh2_openssh_pem_parse_memory(LIBSSH2_SESSION * session,
                                   const unsigned char *passphrase,

@@ -1077,7 +1077,11 @@ _libssh2_rsa_new_openssh_private(libssh2_rsa_ctx ** rsa,
                                  const char *filename,
                                  unsigned const char *passphrase)
 {
+#ifdef LIBSSH2_AMIGADOS
+    BPTR fh;
+#else
     FILE *fp;
+#endif
     int rc;
     unsigned char *buf = NULL;
     struct string_buf *decrypted = NULL;
@@ -1090,6 +1094,17 @@ _libssh2_rsa_new_openssh_private(libssh2_rsa_ctx ** rsa,
 
     _libssh2_init_if_needed();
 
+#ifdef LIBSSH2_AMIGADOS
+    fh = Open((CONST_STRPTR)filename, MODE_OLDFILE);
+    if(!fh) {
+        _libssh2_error(session, LIBSSH2_ERROR_FILE,
+                       "Unable to open OpenSSH RSA private key file");
+        return -1;
+    }
+
+    rc = _libssh2_openssh_pem_parse(session, passphrase, fh, &decrypted);
+    Close(fh);
+#else
     fp = fopen(filename, "r");
     if(!fp) {
         _libssh2_error(session, LIBSSH2_ERROR_FILE,
@@ -1099,6 +1114,7 @@ _libssh2_rsa_new_openssh_private(libssh2_rsa_ctx ** rsa,
 
     rc = _libssh2_openssh_pem_parse(session, passphrase, fp, &decrypted);
     fclose(fp);
+#endif
     if(rc) {
         return rc;
     }
@@ -1380,7 +1396,11 @@ _libssh2_dsa_new_openssh_private(libssh2_dsa_ctx ** dsa,
                                  const char *filename,
                                  unsigned const char *passphrase)
 {
+#ifdef LIBSSH2_AMIGADOS
+    BPTR fh;
+#else
     FILE *fp;
+#endif
     int rc;
     unsigned char *buf = NULL;
     struct string_buf *decrypted = NULL;
@@ -1393,6 +1413,17 @@ _libssh2_dsa_new_openssh_private(libssh2_dsa_ctx ** dsa,
 
     _libssh2_init_if_needed();
 
+#ifdef LIBSSH2_AMIGADOS
+    fh = Open((CONST_STRPTR)filename, MODE_OLDFILE);
+    if(!fh) {
+        _libssh2_error(session, LIBSSH2_ERROR_FILE,
+                       "Unable to open OpenSSH DSA private key file");
+        return -1;
+    }
+
+    rc = _libssh2_openssh_pem_parse(session, passphrase, fh, &decrypted);
+    Close(fh);
+#else
     fp = fopen(filename, "r");
     if(!fp) {
         _libssh2_error(session, LIBSSH2_ERROR_FILE,
@@ -1402,6 +1433,7 @@ _libssh2_dsa_new_openssh_private(libssh2_dsa_ctx ** dsa,
 
     rc = _libssh2_openssh_pem_parse(session, passphrase, fp, &decrypted);
     fclose(fp);
+#endif
     if(rc) {
         return rc;
     }
@@ -1773,7 +1805,11 @@ _libssh2_ed25519_new_private(libssh2_ed25519_ctx ** ed_ctx,
                              const char *filename, const uint8_t *passphrase)
 {
     int rc;
+#ifdef LIBSSH2_AMIGADOS
+    BPTR fh;
+#else
     FILE *fp;
+#endif
     unsigned char *buf;
     struct string_buf *decrypted = NULL;
     libssh2_ed25519_ctx *ctx = NULL;
@@ -1786,6 +1822,17 @@ _libssh2_ed25519_new_private(libssh2_ed25519_ctx ** ed_ctx,
 
     _libssh2_init_if_needed();
 
+#ifdef LIBSSH2_AMIGADOS
+    fh = Open((CONST_STRPTR)filename, MODE_OLDFILE);
+    if(!fh) {
+        _libssh2_error(session, LIBSSH2_ERROR_FILE,
+                       "Unable to open ED25519 private key file");
+        return -1;
+    }
+
+    rc = _libssh2_openssh_pem_parse(session, passphrase, fh, &decrypted);
+    Close(fh);
+#else
     fp = fopen(filename, "r");
     if(!fp) {
         _libssh2_error(session, LIBSSH2_ERROR_FILE,
@@ -1795,6 +1842,7 @@ _libssh2_ed25519_new_private(libssh2_ed25519_ctx ** ed_ctx,
 
     rc = _libssh2_openssh_pem_parse(session, passphrase, fp, &decrypted);
     fclose(fp);
+#endif
     if(rc) {
         return rc;
     }
@@ -2496,7 +2544,11 @@ _libssh2_ecdsa_new_openssh_private(libssh2_ecdsa_ctx ** ec_ctx,
                                    const char *filename,
                                    unsigned const char *passphrase)
 {
+#ifdef LIBSSH2_AMIGADOS
+    BPTR fh;
+#else
     FILE *fp;
+#endif
     int rc;
     unsigned char *buf = NULL;
     libssh2_curve_type type;
@@ -2510,6 +2562,17 @@ _libssh2_ecdsa_new_openssh_private(libssh2_ecdsa_ctx ** ec_ctx,
 
     _libssh2_init_if_needed();
 
+#ifdef LIBSSH2_AMIGADOS
+    fh = Open((CONST_STRPTR)filename, MODE_OLDFILE);
+    if(!fh) {
+        _libssh2_error(session, LIBSSH2_ERROR_FILE,
+                       "Unable to open OpenSSH ECDSA private key file");
+        return -1;
+    }
+
+    rc = _libssh2_openssh_pem_parse(session, passphrase, fh, &decrypted);
+    Close(fh);
+#else
     fp = fopen(filename, "r");
     if(!fp) {
         _libssh2_error(session, LIBSSH2_ERROR_FILE,
@@ -2519,6 +2582,7 @@ _libssh2_ecdsa_new_openssh_private(libssh2_ecdsa_ctx ** ec_ctx,
 
     rc = _libssh2_openssh_pem_parse(session, passphrase, fp, &decrypted);
     fclose(fp);
+#endif
     if(rc) {
         return rc;
     }
@@ -2871,7 +2935,11 @@ _libssh2_pub_priv_openssh_keyfile(LIBSSH2_SESSION *session,
                                   const char *privatekey,
                                   const char *passphrase)
 {
+#ifdef LIBSSH2_AMIGADOS
+    BPTR fh;
+#else
     FILE *fp;
+#endif
     unsigned char *buf = NULL;
     struct string_buf *decrypted = NULL;
     int rc = 0;
@@ -2884,6 +2952,18 @@ _libssh2_pub_priv_openssh_keyfile(LIBSSH2_SESSION *session,
 
     _libssh2_init_if_needed();
 
+#ifdef LIBSSH2_AMIGADOS
+    fh = Open((CONST_STRPTR)privatekey, MODE_OLDFILE);
+    if(!fh) {
+        _libssh2_error(session, LIBSSH2_ERROR_FILE,
+                       "Unable to open private key file");
+        return -1;
+    }
+
+    rc = _libssh2_openssh_pem_parse(session, (const unsigned char *)passphrase,
+                                    fh, &decrypted);
+    Close(fh);
+#else
     fp = fopen(privatekey, "r");
     if(!fp) {
         _libssh2_error(session, LIBSSH2_ERROR_FILE,
@@ -2894,6 +2974,7 @@ _libssh2_pub_priv_openssh_keyfile(LIBSSH2_SESSION *session,
     rc = _libssh2_openssh_pem_parse(session, (const unsigned char *)passphrase,
                                     fp, &decrypted);
     fclose(fp);
+#endif
     if(rc) {
         _libssh2_error(session, LIBSSH2_ERROR_FILE,
                        "Not an OpenSSH key file");

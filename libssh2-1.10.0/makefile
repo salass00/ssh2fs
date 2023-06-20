@@ -7,6 +7,7 @@ DEBUG    = -g
 WARNINGS = -Wall -Werror -Wwrite-strings -Wno-deprecated-declarations
 INCLUDES = -I./include -I./src
 DEFINES  = -DLIBSSH2_OPENSSL -DLIBSSH2_DH_GEX_NEW -DLIBSSH2_HAVE_ZLIB -D__USE_INLINE__
+DEFINES += -DLIBSSH2_AMIGADOS
 #DEFINES += -DLIBSSH2DEBUG
 
 CFLAGS  = -noixemul --std=gnu99 $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES)

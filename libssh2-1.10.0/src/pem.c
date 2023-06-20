@@ -38,17 +38,28 @@
 
 #include "libssh2_priv.h"
 
+#ifdef LIBSSH2_AMIGADOS
+static int
+readline(char *line, int line_size, BPTR fh)
+#else
 static int
 readline(char *line, int line_size, FILE * fp)
+#endif
 {
     size_t len;
 
     if(!line) {
         return -1;
     }
+#ifdef LIBSSH2_AMIGADOS
+    if(!FGets(fh, (STRPTR)line, line_size)) {
+        return -1;
+    }
+#else
     if(!fgets(line, line_size, fp)) {
         return -1;
     }
+#endif
 
     if(*line) {
         len = strlen(line);
@@ -103,12 +114,21 @@ static unsigned char hex_decode(char digit)
     return (digit >= 'A') ? 0xA + (digit - 'A') : (digit - '0');
 }
 
+#ifdef LIBSSH2_AMIGADOS
+int
+_libssh2_pem_parse(LIBSSH2_SESSION * session,
+                   const char *headerbegin,
+                   const char *headerend,
+                   const unsigned char *passphrase,
+                   BPTR fp, unsigned char **data, unsigned int *datalen)
+#else
 int
 _libssh2_pem_parse(LIBSSH2_SESSION * session,
                    const char *headerbegin,
                    const char *headerend,
                    const unsigned char *passphrase,
                    FILE * fp, unsigned char **data, unsigned int *datalen)
+#endif
 {
     char line[LINE_SIZE];
     unsigned char iv[LINE_SIZE];
@@ -667,10 +687,17 @@ out:
     return ret;
 }
 
+#ifdef LIBSSH2_AMIGADOS
+int
+_libssh2_openssh_pem_parse(LIBSSH2_SESSION * session,
+                           const unsigned char *passphrase,
+                           BPTR fp, struct string_buf **decrypted_buf)
+#else
 int
 _libssh2_openssh_pem_parse(LIBSSH2_SESSION * session,
                            const unsigned char *passphrase,
                            FILE * fp, struct string_buf **decrypted_buf)
+#endif
 {
     char line[LINE_SIZE];
     char *b64data = NULL;
