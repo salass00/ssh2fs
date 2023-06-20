@@ -5,7 +5,7 @@ RANLIB = i386-aros-ranlib
 OPTIMIZE = -O2
 DEBUG    = -g
 WARNINGS = -Wall -Werror -Wwrite-strings -Wno-deprecated-declarations
-INCLUDES = -I./include -I./src
+INCLUDES = -I./include -I./src -I../include
 DEFINES  = -DLIBSSH2_OPENSSL -DLIBSSH2_DH_GEX_NEW -DLIBSSH2_HAVE_ZLIB \
            -DLIBSSH2_AMIGADOS -DNDEBUG
 #DEFINES += -DLIBSSH2DEBUG

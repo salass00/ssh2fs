@@ -8,12 +8,12 @@ LIBSSH2DIR = libssh2-1.10.0
 
 OPTIMIZE = -O2 -fomit-frame-pointer
 DEBUG    = -g
-INCLUDES = -I. -I./$(LIBSSH2DIR)/include
+INCLUDES = -I. -I./$(LIBSSH2DIR)/include -I./include
 WARNINGS = -Wall -Werror -Wwrite-strings
 
 CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS = -nostartfiles
-LIBS    = -lcrypto -lz -ldebug -larosc
+LIBS    = -larosc -ldebug
 
 SRCS = start.c main.c time.c malloc.c snprintf.c zlib-stubs.c
 
