@@ -122,7 +122,7 @@ int _start(void)
 		goto cleanup;
 	}
 
-	SocketBase = OpenLibrary((CONST_STRPTR)"bsdsocket.library", 4);
+	SocketBase = OpenLibrary((CONST_STRPTR)"bsdsocket.library", 3);
 	if (SocketBase == NULL)
 	{
 		goto cleanup;
