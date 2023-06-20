@@ -31,10 +31,6 @@
 #include <zlib.h>
 #include <proto/z.h>
 
-const char *zlibVersion (void) {
-	return (const char *)ZlibVersion();
-}
-
 int deflateInit_ (z_streamp strm, int level, const char *version, int stream_size) {
 	const char *my_version = (const char *)ZlibVersion();
 	if (version == Z_NULL || version[0] != my_version[0] || stream_size != sizeof(z_stream)) {
