@@ -36,11 +36,9 @@
 #include <bsdsocket/socketbasetags.h>
 #include <proto/bsdsocket.h>
 
-#ifndef __AROS__
 #include <libraries/amisslmaster.h>
 #include <proto/amisslmaster.h>
 #include <proto/amissl.h>
-#endif
 
 #include <libssh2.h>
 #include <errno.h>
@@ -56,10 +54,8 @@ struct Library *aroscbase;
 struct Library *FileSysBoxBase;
 struct Library *ZBase;
 struct Library *SocketBase;
-#ifndef __AROS__
 struct Library *AmiSSLMasterBase;
 struct Library *AmiSSLBase;
-#endif
 
 static const char vstring[];
 static const char dosName[];
@@ -151,7 +147,6 @@ int _start(void)
 		goto cleanup;
 	}
 
-#ifndef __AROS__
 	AmiSSLMasterBase = OpenLibrary((CONST_STRPTR)amisslmasterName, AMISSLMASTER_MIN_VERSION);
 	if (AmiSSLMasterBase == NULL)
 	{
@@ -167,7 +162,6 @@ int _start(void)
 	{
 		goto cleanup;
 	}
-#endif
 
 	if (setup_malloc() == FALSE)
 	{
@@ -190,7 +184,6 @@ cleanup:
 
 	cleanup_malloc();
 
-#ifndef __AROS__
 	if (AmiSSLBase != NULL)
 	{
 		CloseAmiSSL();
@@ -202,7 +195,6 @@ cleanup:
 		CloseLibrary(AmiSSLMasterBase);
 		AmiSSLMasterBase = NULL;
 	}
-#endif
 
 	if (SocketBase == NULL)
 	{
