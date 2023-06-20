@@ -15,7 +15,7 @@ CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS = -nostartfiles
 LIBS    = -lcrypto -lz -ldebug -larosc
 
-SRCS = start.c main.c time.c malloc.c
+SRCS = start.c main.c time.c malloc.c snprintf.c zlib-stubs.c
 
 OBJS = $(addprefix obj/i386/,$(SRCS:.c=.o))
 DEPS = $(OBJS:.o=.d)
