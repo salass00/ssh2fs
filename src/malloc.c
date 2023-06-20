@@ -71,15 +71,15 @@ void *malloc(size_t size)
 
 static inline size_t malloc_usable_size(void *ptr)
 {
-	return ((size_t *)ptr)[-1];
+	return *((size_t *)ptr - 1);
 }
 
 void free(void *ptr)
 {
 	if (ptr != NULL)
 	{
-		size_t size = malloc_usable_size(ptr);
-		FreePooled(mempool, ptr, size + sizeof(size_t));
+		size_t *mem = (size_t *)ptr - 1;
+		FreePooled(mempool, mem, *mem + sizeof(size_t));
 	}
 }
 
