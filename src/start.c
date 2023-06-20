@@ -50,6 +50,7 @@ struct DosLibrary *DOSBase;
 struct UtilityBase *UtilityBase;
 struct Library *aroscbase;
 struct Library *FileSysBoxBase;
+struct Library *ZBase;
 struct Library *SocketBase;
 
 #ifndef __AROS__
@@ -111,6 +112,12 @@ int _start(void)
 
 	FileSysBoxBase = OpenLibrary((CONST_STRPTR)"filesysbox.library", 54);
 	if (FileSysBoxBase == NULL)
+	{
+		goto cleanup;
+	}
+
+	ZBase = OpenLibrary((CONST_STRPTR)"z.library", 2);
+	if (ZBase == NULL)
 	{
 		goto cleanup;
 	}
@@ -187,6 +194,12 @@ cleanup:
 	{
 		CloseLibrary(SocketBase);
 		SocketBase = NULL;
+	}
+
+	if (ZBase == NULL)
+	{
+		CloseLibrary(ZBase);
+		ZBase = NULL;
 	}
 
 	if (FileSysBoxBase == NULL)
