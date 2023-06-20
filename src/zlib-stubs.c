@@ -166,11 +166,11 @@ int inflateBackEnd (z_streamp strm) {
 }
 
 int compress (Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen) {
-	return Compress(dest, destLen, source, sourceLen);
+	return Compress(dest, (ULONG *)destLen, source, sourceLen);
 }
 
 int compress2 (Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen, int level) {
-	return Compress2(dest, destLen, source, sourceLen, level);
+	return Compress2(dest, (ULONG *)destLen, source, sourceLen, level);
 }
 
 uLong compressBound (uLong sourceLen) {
@@ -178,7 +178,7 @@ uLong compressBound (uLong sourceLen) {
 }
 
 int uncompress (Bytef *dest, uLongf *destLen, const Bytef *source, uLong sourceLen) {
-	return Uncompress(dest, destLen, source, sourceLen);
+	return Uncompress(dest, (ULONG *)destLen, source, sourceLen);
 }
 
 uLong adler32 (uLong adler, const Bytef *buf, uInt len) {
