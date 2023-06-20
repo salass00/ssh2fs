@@ -57,16 +57,16 @@ struct Library *SocketBase;
 struct Library *AmiSSLMasterBase;
 struct Library *AmiSSLBase;
 
-static const char vstring[];
-static const char dosName[];
-static const char utilityName[];
+static const TEXT vstring[];
+static const TEXT dosName[];
+static const TEXT utilityName[];
 #ifdef __AROS__
-static const char aroscName[];
+static const TEXT aroscName[];
 #endif
-static const char filesysboxName[];
-static const char zlibName[];
-static const char bsdsocketName[];
-static const char amisslmasterName[];
+static const TEXT filesysboxName[];
+static const TEXT zlibName[];
+static const TEXT bsdsocketName[];
+static const TEXT amisslmasterName[];
 
 int _start(void)
 {
@@ -77,14 +77,14 @@ int _start(void)
 
 	SysBase = *(struct ExecBase **)4;
 
-	DOSBase = (struct DosLibrary *)OpenLibrary((CONST_STRPTR)dosName, 39);
+	DOSBase = (struct DosLibrary *)OpenLibrary(dosName, 39);
 	if (DOSBase == NULL)
 	{
 		Alert(AG_OpenLib | AO_DOSLib);
 		goto cleanup;
 	}
 
-	UtilityBase = (struct UtilityBase *)OpenLibrary((CONST_STRPTR)utilityName, 39);
+	UtilityBase = (struct UtilityBase *)OpenLibrary(utilityName, 39);
 	if (UtilityBase == NULL)
 	{
 		Alert(AG_OpenLib | AO_UtilityLib);
@@ -95,7 +95,7 @@ int _start(void)
 	if (me->pr_CLI != ZERO)
 	{
 		/* CLI startup */
-		PutStr((CONST_STRPTR)vstring);
+		PutStr(vstring);
 		rc = RETURN_OK;
 		goto cleanup;
 	}
@@ -113,26 +113,26 @@ int _start(void)
 	msg = NULL;
 
 #ifdef __AROS__
-	aroscbase = OpenLibrary((CONST_STRPTR)aroscName, 41);
+	aroscbase = OpenLibrary(aroscName, 41);
 	if (aroscbase == NULL)
 	{
 		goto cleanup;
 	}
 #endif
 
-	FileSysBoxBase = OpenLibrary((CONST_STRPTR)filesysboxName, 54);
+	FileSysBoxBase = OpenLibrary(filesysboxName, 54);
 	if (FileSysBoxBase == NULL)
 	{
 		goto cleanup;
 	}
 
-	ZBase = OpenLibrary((CONST_STRPTR)zlibName, 2);
+	ZBase = OpenLibrary(zlibName, 2);
 	if (ZBase == NULL)
 	{
 		goto cleanup;
 	}
 
-	SocketBase = OpenLibrary((CONST_STRPTR)bsdsocketName, 3);
+	SocketBase = OpenLibrary(bsdsocketName, 3);
 	if (SocketBase == NULL)
 	{
 		goto cleanup;
@@ -147,7 +147,7 @@ int _start(void)
 		goto cleanup;
 	}
 
-	AmiSSLMasterBase = OpenLibrary((CONST_STRPTR)amisslmasterName, AMISSLMASTER_MIN_VERSION);
+	AmiSSLMasterBase = OpenLibrary(amisslmasterName, AMISSLMASTER_MIN_VERSION);
 	if (AmiSSLMasterBase == NULL)
 	{
 		goto cleanup;
@@ -252,15 +252,15 @@ cleanup:
 /* Disable CTRL-C signal checking in libc. */
 void __chkabort(void) {}
 
-static const char USED verstag[] = VERSTAG;
-static const char vstring[] = VSTRING;
-static const char dosName[] = "dos.library";
-static const char utilityName[] = "utility.library";
+static const TEXT USED verstag[] = VERSTAG;
+static const TEXT vstring[] = VSTRING;
+static const TEXT dosName[] = "dos.library";
+static const TEXT utilityName[] = "utility.library";
 #ifdef __AROS__
-static const char aroscName[] = "arosc.library";
+static const TEXT aroscName[] = "arosc.library";
 #endif
-static const char filesysboxName[] = "filesysbox.library";
-static const char zlibName[] = "z.library";
-static const char bsdsocketName[] = "bsdsocket.library";
-static const char amisslmasterName[] = "amisslmaster.library";
+static const TEXT filesysboxName[] = "filesysbox.library";
+static const TEXT zlibName[] = "z.library";
+static const TEXT bsdsocketName[] = "bsdsocket.library";
+static const TEXT amisslmasterName[] = "amisslmaster.library";
 
