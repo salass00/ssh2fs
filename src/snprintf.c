@@ -92,7 +92,6 @@ static void reverse(char *str, size_t len) {
 	}
 }
 
-
 static size_t itoa(unsigned num, char *dst, unsigned base,
 	char issigned, char addplus, char uppercase)
 {
