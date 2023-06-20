@@ -48,7 +48,9 @@
 struct ExecBase *SysBase;
 struct DosLibrary *DOSBase;
 struct UtilityBase *UtilityBase;
+#ifdef __AROS__
 struct Library *aroscbase;
+#endif
 struct Library *FileSysBoxBase;
 struct Library *ZBase;
 struct Library *SocketBase;
@@ -104,11 +106,13 @@ int _start(void)
 	pkt = (struct DosPacket *)msg->mn_Node.ln_Name;
 	msg = NULL;
 
+#ifdef __AROS__
 	aroscbase = OpenLibrary((CONST_STRPTR)"arosc.library", 41);
 	if (aroscbase == NULL)
 	{
 		goto cleanup;
 	}
+#endif
 
 	FileSysBoxBase = OpenLibrary((CONST_STRPTR)"filesysbox.library", 54);
 	if (FileSysBoxBase == NULL)
@@ -208,11 +212,13 @@ cleanup:
 		FileSysBoxBase = NULL;
 	}
 
+#ifdef __AROS__
 	if (aroscbase != NULL)
 	{
 		CloseLibrary(aroscbase);
 		aroscbase = NULL;
 	}
+#endif
 
 	if (UtilityBase != NULL)
 	{
