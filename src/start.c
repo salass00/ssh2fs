@@ -257,6 +257,9 @@ cleanup:
 	return rc;
 }
 
+/* Disable CTRL-C signal checking in libc. */
+void __chkabort(void) {}
+
 static const char USED verstag[] = VERSTAG;
 static const char vstring[] = VSTRING;
 static const char dosName[] = "dos.library";
