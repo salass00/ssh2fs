@@ -1,0 +1,54 @@
+ssh2-handler is filesystem for accessing files remotely using the SFTP
+protocol. It is based on libssh2 1.8.0 and uses AmiSSLv4 for SSL encryption
+/decryption.
+
+Requirements:
+
+- filesysbox.library 54.3 or newer.
+
+- AmiSSL 4.12 or newer.
+
+Usage:
+
+Create a DOSDriver with the following contents:
+Handler   = L:ssh2-handler
+StackSize = 65536
+Priority  = 5
+GlobVec   = -1
+Startup   = "<args>"
+
+Where <args> should follow the template:
+
+HOSTADDR/A,PORT/N/K,USER/A,PASSWORD,VOLUME,READONLY/S,NOSSHAGENT/S,KEYFILE/K,ROOTDIR/K
+
+HOSTADDR is the IP address or domain name of the SSH server.
+
+PORT is the port number (defaults to 22).
+
+USER is the user name.
+
+PASSWORD is the login password or key file passphrase depending on the
+authentication method used. If this argument is left out a password requester
+will be used instead.
+
+VOLUME is the AmigaDOS volume name (defaults to <user>@<hostaddr>).
+
+READONLY sets the filesystem to read only mode.
+
+NOSSHAGENT stops filesystem from attempting to connect to ssh-agent.
+
+KEYFILE can be used to change the key file used for public key authentication
+(defaults to "$HOME/.ssh/id_rsa" or "HOME:.ssh/id_rsa").
+
+ROOTDIR sets the root directory to use as the root of the volume (defaults to
+"/").
+
+To connect to a SFTP server with IP 192.168.1.16 and port 122 using username
+"user123" use:
+
+Startup = "192.168.1.16 PORT=122 user123"
+
+If you want the handler to be started immediately on mount, rather than on the
+first access, then make sure that ACTIVATE=1 is set in either in the icon
+tooltypes or in the DOSDriver file itself.
+

@@ -21,12 +21,12 @@ mkdir -p ${DESTDIR}/ssh2fs/L
 
 if [ "$HOST" = "m68k-amigaos" ]; then
   cp -p Install ${DESTDIR}/ssh2fs
-#  cp -p README ${DESTDIR}/ssh2fs
+  cp -p README ${DESTDIR}/ssh2fs
   cp -p bin/ssh2-handler.000 ${DESTDIR}/ssh2fs/L
   cp -p bin/ssh2-handler.020 ${DESTDIR}/ssh2fs/L
 else
   cp -p Install-AROS ${DESTDIR}/ssh2fs/Install
-#  cp -p README-AROS ${DESTDIR}/ssh2fs/README
+  cp -p README-AROS ${DESTDIR}/ssh2fs/README
   cp -p bin/ssh2-handler.${CPU} ${DESTDIR}/ssh2fs/L/ssh2-handler
 fi;
 cp -p LICENSE ${DESTDIR}/ssh2fs
@@ -35,7 +35,7 @@ cp -p releasenotes ${DESTDIR}/ssh2fs
 
 cp -p icons/def_drawer.info ${DESTDIR}/ssh2fs.info
 cp -p icons/def_install.info ${DESTDIR}/ssh2fs/Install.info
-#cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/README.info
+cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/README.info
 cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/LICENSE.info
 cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/COPYING-libssh2.info
 cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/releasenotes.info
