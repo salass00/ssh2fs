@@ -31,14 +31,14 @@ else
 fi;
 cp -p LICENSE ${DESTDIR}/ssh2fs
 cp -p ${LIBSSH2}/COPYING ${DESTDIR}/ssh2fs/COPYING-libssh2
-#cp -p releasenotes ${DESTDIR}/ssh2fs
+cp -p releasenotes ${DESTDIR}/ssh2fs
 
 cp -p icons/def_drawer.info ${DESTDIR}/ssh2fs.info
 cp -p icons/def_install.info ${DESTDIR}/ssh2fs/Install.info
 #cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/README.info
 cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/LICENSE.info
 cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/COPYING-libssh2.info
-#cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/releasenotes.info
+cp -p icons/def_doc.info ${DESTDIR}/ssh2fs/releasenotes.info
 
 case "${FORMAT}" in
   "7z")
