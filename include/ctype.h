@@ -27,8 +27,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef SMB2FS_CTYPE_H
-#define SMB2FS_CTYPE_H
+#ifndef SSH2FS_CTYPE_H
+#define SSH2FS_CTYPE_H
 
 #ifndef __AROS__
 #include_next <ctype.h>
@@ -134,5 +134,5 @@ static inline int toascii(int c)
 
 #endif /* __AROS__ */
 
-#endif /* SMB2FS_CTYPE_H */
+#endif /* SSH2FS_CTYPE_H */
 
