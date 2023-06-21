@@ -1,0 +1,9 @@
+(welcome)
+(set @default-dest "SYS:")
+(copylib
+	(prompt "Copying ssh2-handler")
+	(help @copylib-help)
+	(source "L/ssh2-handler")
+	(dest "L:")
+)
+(exit)
