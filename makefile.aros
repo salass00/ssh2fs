@@ -21,7 +21,7 @@ OBJS = $(addprefix obj/i386/,$(SRCS:.c=.o))
 DEPS = $(OBJS:.o=.d)
 
 .PHONY: all
-all: bin/$(TARGET).i386
+all: bin/$(TARGET).i386 bin/$(TARGET).i386.debug
 
 -include $(DEPS)
 
@@ -36,13 +36,13 @@ build-libssh2:
 $(LIBSSH2DIR)/bin/libssh2.a.i386: build-libssh2
 	@true
 
-bin/$(TARGET).i386.debug: $(OBJS) $(LIBSMB2DIR)/bin/libsmb2.a.i386
+bin/$(TARGET).i386.debug: $(OBJS) $(LIBSSH2DIR)/bin/libssh2.a.i386
 	@mkdir -p $(dir $@)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 bin/$(TARGET).i386: $(OBJS) $(LIBSSH2DIR)/bin/libssh2.a.i386
 	@mkdir -p $(dir $@)
-	$(CC) -s $(LDFLAGS) -o $@.debug $^ $(LIBS)
+	$(CC) -s $(LDFLAGS) -o $@ $^ $(LIBS)
 
 .PHONY: clean
 clean:
