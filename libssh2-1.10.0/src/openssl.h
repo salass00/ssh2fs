@@ -57,6 +57,10 @@
 #include <openssl/pem.h>
 #include <openssl/rand.h>
 
+#if defined(AMIGA) || defined(__AROS__)
+# include <proto/amissl.h>
+#endif
+
 #if OPENSSL_VERSION_NUMBER >= 0x10100000L && \
     !defined(LIBRESSL_VERSION_NUMBER)
 # define HAVE_OPAQUE_STRUCTS 1
