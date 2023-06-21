@@ -1,6 +1,9 @@
-CC     = i386-aros-gcc
-AR     = i386-aros-ar
-RANLIB = i386-aros-ranlib
+CPU     ?= i386
+SYSROOT ?=
+
+CC     = $(CPU)-aros-gcc
+AR     = $(CPU)-aros-ar
+RANLIB = $(CPU)-aros-ranlib
 
 OPTIMIZE = -O2
 DEBUG    = -g
@@ -12,21 +15,25 @@ DEFINES  = -DLIBSSH2_OPENSSL -DLIBSSH2_DH_GEX_NEW -DLIBSSH2_HAVE_ZLIB \
 
 CFLAGS  = --std=gnu99 $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES)
 
+ifneq (,$(SYSROOT))
+	CFLAGS := --sysroot=$(SYSROOT) $(CFLAGS)
+endif
+
 SRCS = agent.c bcrypt_pbkdf.c blowfish.c channel.c comp.c crypt.c global.c \
        hostkey.c keepalive.c kex.c knownhost.c libgcrypt.c mac.c mbedtls.c \
        misc.c openssl.c packet.c pem.c publickey.c scp.c session.c sftp.c \
        transport.c userauth.c version.c wincng.c
 
-OBJS = $(addprefix obj/i386/,$(SRCS:.c=.o))
+OBJS = $(addprefix obj/$(CPU)/,$(SRCS:.c=.o))
 
 .PHONY: all
-all: bin/libssh2.a.i386
+all: bin/libssh2.a.$(CPU)
 
-obj/i386/%.o: src/%.c
+obj/$(CPU)/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-bin/libssh2.a.i386: $(OBJS)
+bin/libssh2.a.$(CPU): $(OBJS)
 	@mkdir -p $(dir $@)
 	$(AR) -crv $@ $^
 	$(RANLIB) $@

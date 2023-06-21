@@ -1,5 +1,8 @@
-CC    = i386-aros-gcc
-STRIP = i386-aros-strip
+CPU     ?= i386
+SYSROOT ?=
+
+CC    = $(CPU)-aros-gcc
+STRIP = $(CPU)-aros-strip
 
 TARGET  = ssh2-handler
 VERSION = 53
@@ -15,32 +18,46 @@ CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS = -nostartfiles
 LIBS    = -larosc -ldebug
 
+MKFLAGS =
+
+ifneq (i386,$(CPU))
+	MKFLAGS += CPU=$(CPU)
+	DEFINES += -DNO_AROSC_LIB
+	LIBS = -ldebug
+endif
+
+ifneq (,$(SYSROOT))
+	CFLAGS  := --sysroot=$(SYSROOT) $(CFLAGS)
+	LDFLAGS := --sysroot=$(SYSROOT) $(LDFLAGS)
+	MKFLAGS += SYSROOT=$(SYSROOT)
+endif
+
 SRCS = start.c main.c time.c malloc.c snprintf.c amissl-stubs.c zlib-stubs.c
 
-OBJS = $(addprefix obj/i386/,$(SRCS:.c=.o))
+OBJS = $(addprefix obj/$(CPU)/,$(SRCS:.c=.o))
 DEPS = $(OBJS:.o=.d)
 
 .PHONY: all
-all: bin/$(TARGET).i386 bin/$(TARGET).i386.debug
+all: bin/$(TARGET).$(CPU) bin/$(TARGET).$(CPU).debug
 
 -include $(DEPS)
 
-obj/i386/%.o: src/%.c
+obj/$(CPU)/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY: build-libssh2
 build-libssh2:
-	$(MAKE) -C $(LIBSSH2DIR) -f makefile.aros bin/libssh2.a.i386
+	$(MAKE) -C $(LIBSSH2DIR) -f makefile.aros bin/libssh2.a.$(CPU) $(MKFLAGS)
 
-$(LIBSSH2DIR)/bin/libssh2.a.i386: build-libssh2
+$(LIBSSH2DIR)/bin/libssh2.a.$(CPU): build-libssh2
 	@true
 
-bin/$(TARGET).i386.debug: $(OBJS) $(LIBSSH2DIR)/bin/libssh2.a.i386
+bin/$(TARGET).$(CPU).debug: $(OBJS) $(LIBSSH2DIR)/bin/libssh2.a.$(CPU)
 	@mkdir -p $(dir $@)
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
 
-bin/$(TARGET).i386: $(OBJS) $(LIBSSH2DIR)/bin/libssh2.a.i386
+bin/$(TARGET).$(CPU): $(OBJS) $(LIBSSH2DIR)/bin/libssh2.a.$(CPU)
 	@mkdir -p $(dir $@)
 	$(CC) -s $(LDFLAGS) -o $@ $^ $(LIBS)
 
