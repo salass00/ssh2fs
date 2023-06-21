@@ -154,6 +154,7 @@ int _start(void)
 		goto cleanup;
 	}
 
+#if AMISSL_CURRENT_VERSION >= 0x12
 	if (OpenAmiSSLTags(AMISSL_CURRENT_VERSION,
 		AmiSSL_UsesOpenSSLStructs, TRUE,
 		AmiSSL_GetAmiSSLBase,      (Tag)&AmiSSLBase,
@@ -164,6 +165,26 @@ int _start(void)
 	{
 		goto cleanup;
 	}
+#else
+	if (!InitAmiSSLMaster(AMISSL_CURRENT_VERSION, TRUE))
+	{
+		goto cleanup;
+	}
+
+	AmiSSLBase = OpenAmiSSL();
+	if (AmiSSLBase == NULL)
+	{
+		goto cleanup;
+	}
+
+	if (InitAmiSSL(
+		AmiSSL_SocketBase,         (Tag)SocketBase,
+		AmiSSL_ErrNoPtr,           (Tag)&errno,
+		TAG_END) != 0)
+	{
+		goto cleanup;
+	}
+#endif
 
 	if (setup_malloc() == FALSE)
 	{
@@ -188,6 +209,9 @@ cleanup:
 
 	if (AmiSSLBase != NULL)
 	{
+#if AMISSL_CURRENT_VERSION < 0x12
+		CleanupAmiSSLA(NULL);
+#endif
 		CloseAmiSSL();
 		AmiSSLBase = NULL;
 		//AmiSSLExtBase = NULL;
