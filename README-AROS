@@ -6,6 +6,8 @@ Requirements:
 
 - filesysbox.library 54.3 or newer.
 
+- z.library 2.1 or newer (https://github.com/salass00/z_lib/releases).
+
 - AmiSSL 4.12 or newer.
 
 Usage:
