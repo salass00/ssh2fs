@@ -698,7 +698,7 @@ static int ssh2fs_statfs(const char *path, struct statvfs *sfs)
 	blocks = sftp_sfs.f_blocks;
 	bfree  = sftp_sfs.f_bfree;
 	bavail = sftp_sfs.f_bavail;
-	while (blocks > UINT32_MAX)
+	while (blocks > INT32_MAX)
 	{
 		frsize <<= 1;
 		blocks >>= 1;
