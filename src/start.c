@@ -69,14 +69,28 @@ static const TEXT zlibName[];
 static const TEXT bsdsocketName[];
 static const TEXT amisslmasterName[];
 
+#ifdef __AROS__
+AROS_UFH3(int, _start,
+	AROS_UFHA(STRPTR, argstr, A0),
+	AROS_UFHA(ULONG, arglen, D0),
+	AROS_UFHA(struct ExecBase *, sysbase, A6)
+)
+{
+	AROS_USERFUNC_INIT
+#else
 int _start(void)
 {
+#endif
 	struct Process *me;
 	struct Message *msg = NULL;
 	struct DosPacket *pkt = NULL;
 	int rc = RETURN_ERROR;
 
+#ifdef __AROS__
+	SysBase = sysbase;
+#else
 	SysBase = *(struct ExecBase **)4;
+#endif
 
 	DOSBase = (struct DosLibrary *)OpenLibrary(dosName, 39);
 	if (DOSBase == NULL)
@@ -274,6 +288,10 @@ cleanup:
 	}
 
 	return rc;
+
+#ifdef __AROS__
+	AROS_USERFUNC_EXIT
+#endif
 }
 
 /* Disable CTRL-C signal checking in libc. */
