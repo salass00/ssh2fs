@@ -155,8 +155,8 @@ int _start(void)
 
 	if (SocketBaseTags(
 		SBTM_SETVAL(SBTC_BREAKMASK),     0, /* Disable CTRL-C checking in WaitSelect() */
-		SBTM_SETVAL(SBTC_ERRNOLONGPTR),  (Tag)&errno,
-		//SBTM_SETVAL(SBTC_HERRNOLONGPTR), &h_errno // TODO
+		SBTM_SETVAL(SBTC_ERRNOLONGPTR),  (IPTR)&errno,
+		//SBTM_SETVAL(SBTC_HERRNOLONGPTR), (IPTR)&h_errno // TODO
 		TAG_END))
 	{
 		goto cleanup;
@@ -171,10 +171,10 @@ int _start(void)
 #if AMISSL_CURRENT_VERSION >= 0x12
 	if (OpenAmiSSLTags(AMISSL_CURRENT_VERSION,
 		AmiSSL_UsesOpenSSLStructs, TRUE,
-		AmiSSL_GetAmiSSLBase,      (Tag)&AmiSSLBase,
-		//AmiSSL_GetAmiSSLExtBase,   (Tag)&AmiSSLExtBase,
-		AmiSSL_SocketBase,         (Tag)SocketBase,
-		AmiSSL_ErrNoPtr,           (Tag)&errno,
+		AmiSSL_GetAmiSSLBase,      (IPTR)&AmiSSLBase,
+		//AmiSSL_GetAmiSSLExtBase,   (IPTR)&AmiSSLExtBase,
+		AmiSSL_SocketBase,         (IPTR)SocketBase,
+		AmiSSL_ErrNoPtr,           (IPTR)&errno,
 		TAG_END) != 0)
 	{
 		goto cleanup;
