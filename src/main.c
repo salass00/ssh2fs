@@ -122,7 +122,7 @@ static int passphrase_callback(char *buf, int size, int rwflag, void *userdata)
 {
 	if (fsd->password == NULL)
 	{
-		//fsd->password = request_password(AUTH_PUBLICKEY, fsd->keyfile);
+		fsd->password = request_password(AUTH_PUBLICKEY, fsd->keyfile);
 		if (fsd->password == NULL)
 		{
 			if (size)
@@ -399,7 +399,7 @@ static void *ssh2fs_init(struct fuse_conn_info *fci)
 	{
 		if (fsd->password == NULL)
 		{
-			//fsd->password = request_password(AUTH_PASSWORD, username, hostname);
+			fsd->password = request_password(AUTH_PASSWORD, username, hostname);
 			if (fsd->password == NULL)
 			{
 				ssh2fs_destroy(fsd);
@@ -418,7 +418,7 @@ static void *ssh2fs_init(struct fuse_conn_info *fci)
 	{
 		if (fsd->password == NULL)
 		{
-			//fsd->password = request_password(AUTH_KEYBOARD_INTERACTIVE, username, hostname);
+			fsd->password = request_password(AUTH_KEYBOARD_INTERACTIVE, username, hostname);
 			if (fsd->password == NULL)
 			{
 				ssh2fs_destroy(fsd);

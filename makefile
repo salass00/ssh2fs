@@ -17,7 +17,8 @@ LIBS    = -lamisslstubs -ldebug
 
 STRIPFLAGS = -R.comment
 
-SRCS = start.c main.c time.c malloc.c strlcpy.c snprintf.c zlib-stubs.c
+SRCS = start.c main.c time.c malloc.c strlcpy.c snprintf.c zlib-stubs.c \
+       reaction-password-req.c
 
 ARCH_000 = -mcpu=68000 -mtune=68000
 OBJS_000 = $(addprefix obj/68000/,$(SRCS:.c=.o))
