@@ -46,13 +46,6 @@
 #include <proto/bsdsocket.h>
 #include <clib/debug_protos.h>
 
-#ifdef __AROS__
-#define isspace(c) ssh2fs_isspace(c)
-static inline int ssh2fs_isspace(int c) {
-	return (c == ' ' || (c >= '\t' && c <= '\r'));
-}
-#endif
-
 struct fuse_context *_fuse_context_;
 
 const char Template[] =
