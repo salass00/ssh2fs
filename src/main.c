@@ -1048,7 +1048,7 @@ static int ssh2fs_read(const char *path, char *buffer, size_t size,
 
 	if (rc < 0)
 	{
-		return -ssh2fs_convert_error(result);
+		return -ssh2fs_convert_error(rc);
 	}
 
 	return result;
