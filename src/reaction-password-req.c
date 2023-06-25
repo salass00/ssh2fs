@@ -1,7 +1,7 @@
 /*
  * ssh2-handler - SSH2 file system client
  *
- * Copyright (C) 2018-2020 Fredrik Wikstrom <fredrik@a500.org>
+ * Copyright (C) 2018-2023 Fredrik Wikstrom <fredrik@a500.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
