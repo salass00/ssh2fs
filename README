@@ -30,7 +30,8 @@ Startup   = "<args>"
 
 Where <args> should follow the template:
 
-HOSTADDR/A,PORT/N/K,USER/A,PASSWORD,VOLUME,READONLY/S,NOSSHAGENT/S,KEYFILE/K,ROOTDIR/K
+HOSTADDR/A,PORT/N/K,USER/A,PASSWORD,VOLUME,READONLY/S,NOSSHAGENT/S,KEYFILE/K,
+ROOTDIR/K
 
 HOSTADDR is the IP address or domain name of the SSH server.
 
