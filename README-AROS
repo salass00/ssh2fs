@@ -4,11 +4,12 @@ protocol. It is based on libssh2 1.10.0 and uses AmiSSL for SSL encryption
 
 Requirements:
 
-- filesysbox.library 54.3 or newer.
+- filesysbox.library 54.3 or newer
+  (https://github.com/salass00/filesysbox/releases).
 
 - z.library 2.1 or newer (https://github.com/salass00/z_lib/releases).
 
-- AmiSSL 4.12 or newer.
+- AmiSSL 4.12.
 
 Usage:
 
