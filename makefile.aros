@@ -32,7 +32,8 @@ ifneq (,$(SYSROOT))
 	MKFLAGS += SYSROOT=$(SYSROOT)
 endif
 
-SRCS = start.c main.c time.c malloc.c snprintf.c amissl-stubs.c zlib-stubs.c
+SRCS = start.c main.c time.c malloc.c snprintf.c amissl-stubs.c zlib-stubs.c \
+       mui-password-req.c
 
 OBJS = $(addprefix obj/$(CPU)/,$(SRCS:.c=.o))
 DEPS = $(OBJS:.o=.d)
