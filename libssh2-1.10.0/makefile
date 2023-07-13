@@ -17,36 +17,36 @@ SRCS = agent.c bcrypt_pbkdf.c blowfish.c channel.c comp.c crypt.c global.c \
        misc.c openssl.c packet.c pem.c publickey.c scp.c session.c sftp.c \
        transport.c userauth.c version.c wincng.c
 
-ARCH_000 = -mcpu=68000 -mtune=68000
-OBJS_000 = $(addprefix obj/68000/,$(SRCS:.c=.o))
-DEPS_000 = $(OBJS_000:.o=.d)
-
 ARCH_020 = -mcpu=68020 -mtune=68020-60
 OBJS_020 = $(addprefix obj/68020/,$(SRCS:.c=.o))
 DEPS_020 = $(OBJS_020:.o=.d)
 
+ARCH_060 = -mcpu=68060 -mtune=68060
+OBJS_060 = $(addprefix obj/68060/,$(SRCS:.c=.o))
+DEPS_060 = $(OBJS_060:.o=.d)
+
 .PHONY: all
-all: bin/libssh2.a.000 bin/libssh2.a.020
+all: bin/libssh2.a.020 bin/libssh2.a.060
 
--include $(DEPS_000)
 -include $(DEPS_020)
-
-obj/68000/%.o: src/%.c
-	@mkdir -p $(dir $@)
-	$(CC) -MM -MP -MT $(@:.o=.d) -MT $@ -MF $(@:.o=.d) $(ARCH_000) $(CFLAGS) $<
-	$(CC) $(ARCH_000) $(CFLAGS) -c -o $@ $<
+-include $(DEPS_060)
 
 obj/68020/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	$(CC) -MM -MP -MT $(@:.o=.d) -MT $@ -MF $(@:.o=.d) $(ARCH_020) $(CFLAGS) $<
 	$(CC) $(ARCH_020) $(CFLAGS) -c -o $@ $<
 
-bin/libssh2.a.000: $(OBJS_000)
+obj/68060/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) -MM -MP -MT $(@:.o=.d) -MT $@ -MF $(@:.o=.d) $(ARCH_060) $(CFLAGS) $<
+	$(CC) $(ARCH_060) $(CFLAGS) -c -o $@ $<
+
+bin/libssh2.a.020: $(OBJS_020)
 	@mkdir -p $(dir $@)
 	$(AR) -crv $@ $^
 	$(RANLIB) $@
 
-bin/libssh2.a.020: $(OBJS_020)
+bin/libssh2.a.060: $(OBJS_060)
 	@mkdir -p $(dir $@)
 	$(AR) -crv $@ $^
 	$(RANLIB) $@

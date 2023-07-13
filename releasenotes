@@ -2,3 +2,9 @@ ssh2-handler 53.1 (28.6.2023)
 
 - First released version.
 
+
+ssh2-handler 53.2 (d.m.2023)
+
+- AmigaOS 3: Added a version compiled for the 68060 CPU and removed the 68000
+  version as AmiSSL only supports 68020+ CPUs.
+

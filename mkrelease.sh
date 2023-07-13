@@ -22,8 +22,8 @@ mkdir -p ${DESTDIR}/ssh2fs/L
 if [ "$HOST" = "m68k-amigaos" ]; then
   cp -p Install ${DESTDIR}/ssh2fs
   cp -p README ${DESTDIR}/ssh2fs
-  cp -p bin/ssh2-handler.000 ${DESTDIR}/ssh2fs/L
   cp -p bin/ssh2-handler.020 ${DESTDIR}/ssh2fs/L
+  cp -p bin/ssh2-handler.060 ${DESTDIR}/ssh2fs/L
 else
   cp -p Install-AROS ${DESTDIR}/ssh2fs/Install
   cp -p README-AROS ${DESTDIR}/ssh2fs/README
