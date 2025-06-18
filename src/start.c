@@ -47,7 +47,7 @@
 
 struct ExecBase *SysBase;
 struct DosLibrary *DOSBase;
-struct UtilityBase *UtilityBase;
+struct Library *UtilityBase;
 #ifdef __AROS__
 struct Library *aroscbase;
 #endif
@@ -99,7 +99,7 @@ int _start(void)
 		goto cleanup;
 	}
 
-	UtilityBase = (struct UtilityBase *)OpenLibrary(utilityName, 39);
+	UtilityBase = OpenLibrary(utilityName, 39);
 	if (UtilityBase == NULL)
 	{
 		Alert(AG_OpenLib | AO_UtilityLib);
@@ -265,7 +265,7 @@ cleanup:
 
 	if (UtilityBase != NULL)
 	{
-		CloseLibrary((struct Library *)UtilityBase);
+		CloseLibrary(UtilityBase);
 		UtilityBase = NULL;
 	}
 
