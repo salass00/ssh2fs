@@ -624,7 +624,11 @@ int _libssh2_wait_socket(LIBSSH2_SESSION *session, time_t start_time)
         (seconds_to_next == 0 ||
          ms_to_next > session->api_timeout)) {
         time_t now = time(NULL);
+#if defined(__AMIGA__) && defined(__m68k__)
+        elapsed_ms = (long)(now - start_time) * 1000;
+#else
         elapsed_ms = (long)(1000*difftime(now, start_time));
+#endif
         if(elapsed_ms > session->api_timeout) {
             return _libssh2_error(session, LIBSSH2_ERROR_TIMEOUT,
                                   "API timeout expired");
