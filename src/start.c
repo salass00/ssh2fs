@@ -70,7 +70,7 @@ static const TEXT bsdsocketName[];
 static const TEXT amisslmasterName[];
 
 #ifdef __AROS__
-AROS_UFH3(int, _start,
+__startup AROS_UFH3(int, _start,
 	AROS_UFHA(STRPTR, argstr, A0),
 	AROS_UFHA(ULONG, arglen, D0),
 	AROS_UFHA(struct ExecBase *, sysbase, A6)
