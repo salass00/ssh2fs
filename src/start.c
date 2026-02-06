@@ -31,8 +31,6 @@
 #include "ssh2-handler_rev.h"
 
 #include <exec/alerts.h>
-#include <utility/utility.h>
-#include <proto/utility.h>
 #include <bsdsocket/socketbasetags.h>
 #include <proto/bsdsocket.h>
 
