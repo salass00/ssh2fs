@@ -1,5 +1,5 @@
 ssh2-handler is filesystem for accessing files remotely using the SFTP
-protocol. It is based on libssh2 1.10.0 and uses AmiSSL for SSL encryption
+protocol. It is based on libssh2 1.11.1 and uses AmiSSL for SSL encryption
 /decryption.
 
 Requirements:
