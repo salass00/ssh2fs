@@ -13,7 +13,7 @@ else
   make -f makefile.aros CPU=${CPU} all
 fi;
 
-LIBSSH2='libssh2-1.10.0'
+LIBSSH2='libssh2-1.11.1'
 DESTDIR='tmp'
 
 rm -rf ${DESTDIR}
