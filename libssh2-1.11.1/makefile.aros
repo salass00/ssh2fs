@@ -1,0 +1,44 @@
+CPU     ?= i386
+SYSROOT ?=
+
+CC     = $(CPU)-aros-gcc
+AR     = $(CPU)-aros-ar
+RANLIB = $(CPU)-aros-ranlib
+
+OPTIMIZE = -O2
+DEBUG    = -g
+WARNINGS = -Wall -Werror -Wwrite-strings -Wno-deprecated-declarations
+INCLUDES = -I./include -I./src -I../include
+DEFINES  = -DHAVE_CONFIG_H -DLIBSSH2_AMIGADOS -DNDEBUG
+#DEFINES += -DLIBSSH2DEBUG
+
+CFLAGS  = --std=gnu99 $(OPTIMIZE) $(DEBUG) $(WARNINGS) $(INCLUDES) $(DEFINES)
+
+ifneq (,$(SYSROOT))
+	CFLAGS := --sysroot=$(SYSROOT) $(CFLAGS)
+endif
+
+SRCS = agent.c bcrypt_pbkdf.c blowfish.c chacha.c channel.c \
+       cipher-chachapoly.c comp.c crypt.c crypto.c global.c hostkey.c \
+       keepalive.c kex.c knownhost.c mac.c misc.c packet.c pem.c poly1305.c \
+       publickey.c scp.c session.c sftp.c transport.c userauth.c \
+       userauth_kbd_packet.c version.c
+
+OBJS = $(addprefix obj/$(CPU)/,$(SRCS:.c=.o))
+
+.PHONY: all
+all: bin/libssh2.a.$(CPU)
+
+obj/$(CPU)/%.o: src/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+bin/libssh2.a.$(CPU): $(OBJS)
+	@mkdir -p $(dir $@)
+	$(AR) -crv $@ $^
+	$(RANLIB) $@
+
+.PHONY: clean
+clean:
+	rm -rf bin obj
+

@@ -4,7 +4,7 @@ STRIP = m68k-amigaos-strip
 TARGET  = ssh2-handler
 VERSION = 53
 
-LIBSSH2DIR = libssh2-1.10.0
+LIBSSH2DIR = libssh2-1.11.1
 
 OPTIMIZE = -O2 -fomit-frame-pointer
 DEBUG    = -g

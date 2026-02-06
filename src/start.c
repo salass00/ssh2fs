@@ -56,7 +56,7 @@ struct Library *ZBase;
 struct Library *SocketBase;
 struct Library *AmiSSLMasterBase;
 struct Library *AmiSSLBase;
-//struct Library *AmiSSLExtBase;
+struct Library *AmiSSLExtBase;
 
 static const TEXT vstring[];
 static const TEXT dosName[];
@@ -172,7 +172,7 @@ int _start(void)
 	if (OpenAmiSSLTags(AMISSL_CURRENT_VERSION,
 		AmiSSL_UsesOpenSSLStructs, TRUE,
 		AmiSSL_GetAmiSSLBase,      (IPTR)&AmiSSLBase,
-		//AmiSSL_GetAmiSSLExtBase,   (IPTR)&AmiSSLExtBase,
+		AmiSSL_GetAmiSSLExtBase,   (IPTR)&AmiSSLExtBase,
 		AmiSSL_SocketBase,         (IPTR)SocketBase,
 		AmiSSL_ErrNoPtr,           (IPTR)&errno,
 		TAG_END) != 0)
@@ -228,7 +228,7 @@ cleanup:
 #endif
 		CloseAmiSSL();
 		AmiSSLBase = NULL;
-		//AmiSSLExtBase = NULL;
+		AmiSSLExtBase = NULL;
 	}
 
 	if (AmiSSLMasterBase != NULL)
