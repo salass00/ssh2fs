@@ -32,7 +32,7 @@
 /* Parenthesis around function names in prototypes is to stop the preprocessor
  * from ruining them by doing unwanted macro expansion.
  *
- * These functions need to be implemented as stubs as libssh2 takes a pointer
+ * These functions need to be implemented as stubs as libssh2 takes pointers
  * to them and expects them to use a standard C function call ABI.
  */
 
@@ -64,6 +64,16 @@ const EVP_CIPHER *(EVP_aes_192_ctr)(void)
 const EVP_CIPHER *(EVP_aes_256_ctr)(void)
 {
 	return EVP_aes_256_ctr();
+}
+
+const EVP_CIPHER *(EVP_aes_128_gcm)(void)
+{
+	return EVP_aes_128_gcm();
+}
+
+const EVP_CIPHER *(EVP_aes_256_gcm)(void)
+{
+	return EVP_aes_256_gcm();
 }
 
 const EVP_CIPHER *(EVP_bf_cbc)(void)
