@@ -7,7 +7,7 @@ STRIP = $(CPU)-aros-strip
 TARGET  = ssh2-handler
 VERSION = 53
 
-LIBSSH2DIR = libssh2-1.11.1
+LIBSSH2DIR = libssh2-1.10.0
 
 OPTIMIZE = -O2 -fomit-frame-pointer
 DEBUG    = -g
@@ -16,7 +16,7 @@ WARNINGS = -Wall -Werror -Wwrite-strings
 
 CFLAGS  = $(OPTIMIZE) $(DEBUG) $(INCLUDES) $(WARNINGS)
 LDFLAGS = -nostartfiles
-LIBS    = -larosc -ldebug
+LIBS    = -ldebug
 
 MKFLAGS =
 

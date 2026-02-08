@@ -47,7 +47,8 @@ struct ExecBase *SysBase;
 struct DosLibrary *DOSBase;
 struct Library *UtilityBase;
 #ifdef __AROS__
-struct Library *aroscbase;
+struct Library *StdlibBase;
+struct Library *CrtBase;
 #endif
 struct Library *FileSysBoxBase;
 struct Library *ZBase;
@@ -60,7 +61,8 @@ static const TEXT vstring[];
 static const TEXT dosName[];
 static const TEXT utilityName[];
 #ifdef __AROS__
-static const TEXT aroscName[];
+static const TEXT stdlibName[];
+static const TEXT crtName[];
 #endif
 static const TEXT filesysboxName[];
 static const TEXT zlibName[];
@@ -126,8 +128,13 @@ int _start(void)
 	msg = NULL;
 
 #ifdef __AROS__
-	aroscbase = OpenLibrary(aroscName, 41);
-	if (aroscbase == NULL)
+	StdlibBase = OpenLibrary(stdlibName, 1);
+	if (StdlibBase == NULL)
+	{
+		goto cleanup;
+	}
+	CrtBase = OpenLibrary(crtName, 2);
+	if (CrtBase == NULL)
 	{
 		goto cleanup;
 	}
@@ -254,10 +261,15 @@ cleanup:
 	}
 
 #ifdef __AROS__
-	if (aroscbase != NULL)
+	if (CrtBase != NULL)
 	{
-		CloseLibrary(aroscbase);
-		aroscbase = NULL;
+		CloseLibrary(CrtBase);
+		CrtBase = NULL;
+	}
+	if (StdlibBase != NULL)
+	{
+		CloseLibrary(StdlibBase);
+		StdlibBase = NULL;
 	}
 #endif
 
@@ -300,7 +312,8 @@ static const TEXT vstring[] = VSTRING;
 static const TEXT dosName[] = "dos.library";
 static const TEXT utilityName[] = "utility.library";
 #ifdef __AROS__
-static const TEXT aroscName[] = "arosc.library";
+static const TEXT stdlibName[] = "stdlib.library";
+static const TEXT crtName[] = "crt.library";
 #endif
 static const TEXT filesysboxName[] = "filesysbox.library";
 static const TEXT zlibName[] = "z.library";
