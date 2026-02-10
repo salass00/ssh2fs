@@ -43,6 +43,14 @@
 
 #include <SDI/SDI_compiler.h>
 
+#ifndef AMISSL_V303
+#define AMISSL_V303 0x15
+#endif
+
+#if AMISSL_CURRENT_VERSION >= AMISSL_V303
+#define HAVE_OPENAMISSLTAGS 1
+#endif
+
 struct ExecBase *SysBase;
 struct DosLibrary *DOSBase;
 struct Library *UtilityBase;
@@ -55,7 +63,7 @@ struct Library *ZBase;
 struct Library *SocketBase;
 struct Library *AmiSSLMasterBase;
 struct Library *AmiSSLBase;
-#if AMISSL_CURRENT_VERSION >= 0x12
+#ifdef HAVE_OPENAMISSLTAGS
 struct Library *AmiSSLExtBase;
 #endif
 
@@ -175,7 +183,7 @@ int _start(void)
 		goto cleanup;
 	}
 
-#if AMISSL_CURRENT_VERSION >= 0x12
+#ifdef HAVE_OPENAMISSLTAGS
 	if (OpenAmiSSLTags(AMISSL_CURRENT_VERSION,
 		AmiSSL_UsesOpenSSLStructs, TRUE,
 		AmiSSL_GetAmiSSLBase,      (IPTR)&AmiSSLBase,
@@ -230,12 +238,12 @@ cleanup:
 
 	if (AmiSSLBase != NULL)
 	{
-#if AMISSL_CURRENT_VERSION < 0x12
+#ifndef HAVE_OPENAMISSLTAGS
 		CleanupAmiSSLA(NULL);
 #endif
 		CloseAmiSSL();
 		AmiSSLBase = NULL;
-#if AMISSL_CURRENT_VERSION >= 0x12
+#ifdef HAVE_OPENAMISSLTAGS
 		AmiSSLExtBase = NULL;
 #endif
 	}
