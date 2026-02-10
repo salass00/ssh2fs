@@ -55,7 +55,9 @@ struct Library *ZBase;
 struct Library *SocketBase;
 struct Library *AmiSSLMasterBase;
 struct Library *AmiSSLBase;
+#if AMISSL_CURRENT_VERSION >= 0x12
 struct Library *AmiSSLExtBase;
+#endif
 
 static const TEXT vstring[];
 static const TEXT dosName[];
@@ -233,7 +235,9 @@ cleanup:
 #endif
 		CloseAmiSSL();
 		AmiSSLBase = NULL;
+#if AMISSL_CURRENT_VERSION >= 0x12
 		AmiSSLExtBase = NULL;
+#endif
 	}
 
 	if (AmiSSLMasterBase != NULL)
