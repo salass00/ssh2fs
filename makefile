@@ -44,6 +44,8 @@ obj/68060/%.o: src/%.c
 	$(CC) -MM -MP -MT $(@:.o=.d) -MT $@ -MF $(@:.o=.d) $(ARCH_060) $(CFLAGS) $<
 	$(CC) $(ARCH_060) $(CFLAGS) -c -o $@ $<
 
+obj/%/malloc.o: OPTIMIZE += -fno-builtin
+
 .PHONY: build-libssh2-020 build-libssh2-060
 
 build-libssh2-020:
