@@ -207,8 +207,8 @@ int _start(void)
 	}
 
 	if (InitAmiSSL(
-		AmiSSL_SocketBase,         (Tag)SocketBase,
-		AmiSSL_ErrNoPtr,           (Tag)&errno,
+		AmiSSL_SocketBase,         (IPTR)SocketBase,
+		AmiSSL_ErrNoPtr,           (IPTR)&errno,
 		TAG_END) != 0)
 	{
 		goto cleanup;
